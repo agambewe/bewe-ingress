@@ -1,0 +1,8 @@
+---
+resources:
+- fb-configmap.yaml
+- pesbuk.yaml
+- wp-secret.yaml
+- wordpress.yaml
+- landing-page.yaml
+- deployment.yaml

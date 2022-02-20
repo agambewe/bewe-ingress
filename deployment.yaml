@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: bewestaging
+  namespace: staging
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: staging-agam.bewe.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: landing-service
+                port:
+                  number: 80
+    - host: staging-pesbuk.bewe.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: sosmed-service
+                port:
+                  number: 80
+    - host: staging-blog.bewe.tech
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: wordpress-service
+                port:
+                  number: 80

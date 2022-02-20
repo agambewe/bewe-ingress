@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wordpress-app
+  namespace: staging
+  labels:
+    app: wordpress-app
+spec:
+  selector:
+    matchLabels:
+      app: wordpress-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: wordpress-app
+    spec:
+      containers:
+      - name: wordpress-app
+        image: wordpress
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 80
+        env:
+        - name: WORDPRESS_DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: wp-secret
+              key: WORDPRESS_DB_HOST
+        - name: WORDPRESS_DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: wp-secret
+              key: WORDPRESS_DB_USER
+        - name: WORDPRESS_DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: wp-secret
+              key: WORDPRESS_DB_PASSWORD
+        - name: WORDPRESS_DB_NAME
+          value: dbwpstaging
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: wordpress-service
+  namespace: staging
+spec:
+  type: NodePort
+  selector:
+    app: wordpress-app
+  ports:
+  - port: 80
+    protocol: "TCP"
+  
